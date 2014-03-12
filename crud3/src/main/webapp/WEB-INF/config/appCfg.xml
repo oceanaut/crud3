@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:c="http://www.springframework.org/schema/c"
+        xmlns:p="http://www.springframework.org/schema/p"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+        http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd 
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+        
+		<context:component-scan base-package="com.tutorialspoint" />
+  		<!-- to enable autowire feature -->
+  		<context:annotation-config />
+	
+		<!-- mysql cfg 
+		<bean id="DataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		    <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		    <property name="url" value="jdbc:mysql://localhost:3306/test" />
+		    <property name="username" value="root" />
+		    <property name="password" value="q1w2e3r4" />
+		</bean>
+	    
+	    <bean id="propertyConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+        p:location="/WEB-INF/jdbc.properties"></bean>
+	   
+ -->
+ 		<bean id="propertyConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:jdbc.properties</value>
+            </list>
+        </property>
+        </bean>
+ 		
+       <bean id="DataSource"
+        class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
+        p:driverClassName="${jdbc.driverClassName}"
+        p:url="${jdbc.databaseurl}" p:username="${jdbc.username}"
+        p:password="${jdbc.password}"></bean>
+		
+		
+		<bean id="SessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		    <property name="dataSource" ref="DataSource" />
+		    <property name="annotatedClasses">
+		      <list>
+		       <!--  <value>com.tutorialspoint.test.model.Employee</value>
+		        <value>com.tutorialspoint.test.model.Course</value> -->
+		        <value>com.tutorialspoint.test.model.Stock</value>
+		         <value>com.tutorialspoint.test.model.StockDailyRecord</value>
+		        <value>com.tutorialspoint.test.model.Team</value>
+		      </list>
+		    </property>
+		    <property name="hibernateProperties">
+		      <props>
+		        <!-- <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>  -->
+		        <prop key="hibernate.dialect">${jdbc.dialect}</prop>
+		        <prop key="hibernate.show_sql">true</prop>
+		        <prop key="hibernate.c3p0.min_size">5</prop>
+		        <prop key="hibernate.c3p0.max_size">20</prop>
+		        <prop key="hibernate.c3p0.timeout">1800</prop>
+		        <prop key="hibernate.c3p0.max_statements">50</prop>
+		      </props>
+		    </property>
+		  </bean>
+		
+		    <tx:annotation-driven transaction-manager="txManager" />
+			  <bean id="txManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+			    <property name="sessionFactory" ref="SessionFactory" />
+			  </bean>
+			   
+			   
+			<!--    
+		<bean id="dataSource"
+		        class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		        <property name="url" value="jdbc:mysql://localhost:3306/db1" />
+		        <property name="username" value="root" />
+		        <property name="password" value="q1w2e3r4" />
+        </bean>
+	
+    <bean id="customjdbcUserService" class="com.tutorialspoint.test.managedBeans.security.CustomJDBCDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="enableAuthorities" value="false"/>
+        <property name="enableGroups" value="true"/>
+        <property name="usersByUsernameQuery">
+            <value>SELECT JSF_SPRING_SEC_USERS_USERNAME, JSF_SPRING_SEC_USERS_PASSWORD, JSF_SPRING_SEC_USERS_ENABLED FROM JSF_SPRING_SEC_USERS WHERE JSF_SPRING_SEC_USERS_USERNAME = ?</value>
+        </property>
+        <property name="authoritiesByUsernameQuery">
+            <value>
+                 SELECT JSF_SPRING_SEC_ROLES_USERNAME,JSF_SPRING_SEC_ROLES_ROLE_NAME from JSF_SPRING_SEC_ROLES where JSF_SPRING_SEC_ROLES_USERNAME = ?
+            </value>
+        </property>
+        <property name="groupAuthoritiesByUsernameQuery">
+            <value>
+                  SELECT
+                        GROUPDTLS.JSF_SPRING_SEC_GROUPS_GROUP_ID,
+                        GROUPDTLS.JSF_SPRING_SEC_GROUPS_GROUP_NAME,
+                        GROUPPERMISSION.JSF_SPRING_SEC_GROUP_AUTHORITIES_AUTHORITY
+                FROM
+                        JSF_SPRING_SEC_GROUPS GROUPDTLS,
+                        JSF_SPRING_SEC_GROUP_AUTHORITIES GROUPPERMISSION,
+                        JSF_SPRING_SEC_GROUP_MEMBERS GROUPMEMBERS,
+                        JSF_SPRING_SEC_USERS USERS
+                WHERE
+                        USERS.JSF_SPRING_SEC_USERS_USERNAME = ? AND
+                        GROUPMEMBERS.JSF_SPRING_SEC_GROUP_MEMBERS_USER_ID = USERS.PK_JSF_SPRING_SEC_USERS AND
+                        GROUPMEMBERS.JSF_SPRING_SEC_GROUP_MEMBERS_GROUP_ID = GROUPDTLS.JSF_SPRING_SEC_GROUPS_GROUP_ID AND
+                        GROUPPERMISSION.JSF_SPRING_SEC_GROUP_AUTHORITIES_GROUP_ID = GROUPDTLS.JSF_SPRING_SEC_GROUPS_GROUP_ID            
+            </value>
+        </property>
+      </bean>
+          
+	      
+       <bean id="navigator" name="navigator" class="com.tutorialspoint.test.managedBeans.security.Navigator" scope="session">
+       </bean>  
+       
+       <bean id="loginBean" name="loginBean" class="com.tutorialspoint.test.managedBeans.security.LoginBean" scope="request">
+        <property name="authenticationManager" ref="authenticationManager" />
+        <property name="userDetailsService" ref="customjdbcUserService"></property>    
+       </bean>
+      
+                
+              <bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="passwordEncoder"  />  
+     <bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="bCryptPasswordEncoder" c:strength="100" />
+    
+   <bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="bCryptPasswordEncoder"  /> 
+     
+     <bean id="securityBean" class="com.tutorialspoint.test.managedBeans.security.SecurityHolderBean" scope="session">
+    </bean>
+    
+       <bean id="databasePasswordEncrypter" class="com.tutorialspoint.test.managedBeans.security.DBPasswordEncrypterBean" init-method="encryptDBPassword" depends-on="dataSource">
+         <property name="passwordEncoder" ref="bCryptPasswordEncoder"></property> 
+        <property name="bCryptPasswordEncoder" ref="bCryptPasswordEncoder"></property>
+         <property name="passwordEncoder" ref="passwordEncoder"></property>
+        
+        <property name="dataSource" ref="dataSource"></property>        
+        <property name="selectQuery">            
+            <value>SELECT JSF_SPRING_SEC_USERS_USERNAME, JSF_SPRING_SEC_USERS_PASSWORD, JSF_SPRING_SEC_USERS_ENCRYPTED FROM JSF_SPRING_SEC_USERS WHERE (JSF_SPRING_SEC_USERS_ENCRYPTED='' || JSF_SPRING_SEC_USERS_ENCRYPTED IS NULL)</value>
+        </property>
+        <property name="updateQuery">
+            <value>UPDATE JSF_SPRING_SEC_USERS SET JSF_SPRING_SEC_USERS_PASSWORD = ?, JSF_SPRING_SEC_USERS_ENCRYPTED='YES' WHERE JSF_SPRING_SEC_USERS_USERNAME = ? </value>
+        </property>
+    </bean>
+     -->
+   </beans>

@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"      	  
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite">
+      <f:loadBundle basename="welcome.messages" var="msg"/>
+ <h:head><title><h:outputText value="#{msg.welcomeTitle}" /></title></h:head>
+ <h:body>
+     
+<p:panel header="employee list" style="width: 650;">
+      <h:form prependId="false">
+        <p:dataTable id="basic" var="emp" value="#{employeeBean.empList}">
+          <p:column>
+            <f:facet name="header"> Emp Number </f:facet>
+            <h:outputText value="#{emp.empID}" />
+          </p:column>
+          <p:column id="nameHeader">
+            <f:facet name="header"> Employee Name </f:facet>
+            <h:outputText value="#{emp.empName}" />
+          </p:column>          
+          <p:column>
+            <f:facet name="header"> Email </f:facet>
+            <h:outputText value="#{emp.email}" />
+          </p:column>
+        </p:dataTable>
+      </h:form>
+    </p:panel>
+ 
+ 
+        
+</h:body>
+</html> 

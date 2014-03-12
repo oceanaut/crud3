@@ -1,0 +1,60 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"      	  
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite">
+      <f:loadBundle basename="welcome.messages" var="msg"/>
+ <h:head><title><h:outputText value="#{msg.welcomeTitle}" /></title></h:head>
+ <h:body>
+     
+<p:panel header="team list" style="width: 650;">
+      <h:form prependId="false">
+        <p:dataTable id="basic" var="team" value="#{teamBean.teamList}">
+          <p:column>
+            <f:facet name="header"> team id </f:facet>
+            <h:outputText value="#{team.id}" />
+          </p:column>
+          <p:column id="nameHeader">
+            <f:facet name="header">team name </f:facet>
+            <h:outputText value="#{team.name}" />
+          </p:column>          
+          <p:column>
+            <f:facet name="header"> team rating </f:facet>
+            <h:outputText value="#{team.rating}" />
+          </p:column>
+        </p:dataTable>
+      </h:form>
+    </p:panel>
+    
+<p:panel header="team list" style="width: 650;">
+      <h:form prependId="false">
+    <p:dataTable id="basic" var="team" value="#{teamBean.teamList}" paginator="true" rows="10">  
+     	<p:column>
+            <f:facet name="header"> team id </f:facet>
+            <h:outputText value="#{team.id}" />
+          </p:column>
+  
+   			<p:column id="nameHeader">
+            <f:facet name="header">team name </f:facet>
+            <h:outputText value="#{team.name}" />
+          </p:column> 
+  
+     		<p:column>
+            <f:facet name="header"> team rating </f:facet>
+            <h:outputText value="#{team.rating}" />
+          </p:column> 
+  
+  </p:dataTable> 
+  
+ 
+  <p:commandLink id="nonAjax" actionListener="#{teamBean.generateReport}" value="/images/excel.png" style="margin-right:20px;" ajax="false">  
+        <h:outputText value="Non-Ajax Submit" />  
+    </p:commandLink>  
+	
+        </h:form>
+    </p:panel>
+    
+       
+</h:body>
+</html> 

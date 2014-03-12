@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"      	  
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite">
+      <f:loadBundle basename="welcome.messages" var="msg"/>
+ <h:head><title><h:outputText value="#{msg.welcomeTitle}" /></title></h:head>
+ <h:body>
+     
+   <h:form>
+                <h:panelGrid id="panel2" columns="2" border="1"
+                             cellpadding="5" cellspacing="1">
+                    <f:facet name="header">
+                        <h:outputText value="Update/Delete Employee Info"/>
+                    </f:facet>
+                    <h:selectOneMenu value="#{employeeBean.selectedname}" id="ulist">
+                        <f:selectItems value="#{employeeBean.empList}"/>
+                        <f:ajax event="change" render="eid fname" listener="#{employeeBean.fullInfo}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="Employee: ID:"/>
+                    <h:inputText value="#{employeeBean.empID}" id="eid"/>                    
+                    <h:outputLabel value=" Name:"/>
+                    <h:inputText value="#{employeeBean.empName}" id="fname"/>  
+                    <h:outputLabel value="Email:"/>
+                    <h:inputText value="#{employeeBean.email}" id="email"/>
+                    <f:facet name="footer">                      
+                        <h:commandButton value="Delete" action="#{employeeBean.deleteEmployee}">
+                        </h:commandButton>
+                    </f:facet>
+                </h:panelGrid>
+            </h:form>
+        
+</h:body>
+</html> 

@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"      	  
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite">
+      <f:loadBundle basename="welcome.messages" var="msg"/>
+ <h:head><title><h:outputText value="#{msg.welcomeTitle}" /></title></h:head>
+ <h:body>
+     
+    <h:form>
+            <h:panelGrid id="panel1" columns="2" border="1"
+                         cellpadding="5" cellspacing="1">
+                <f:facet name="header">
+                    <h:outputText value="Add Employee Information"/>
+                </f:facet>
+                <h:outputLabel value="empID:"/>
+                <h:inputText value="#{employeeBean.empID}" id="fn"/>
+                <h:outputLabel value="Name:"/>
+                <h:inputText value="#{employeeBean.empName}" id="ln"/>
+                <h:outputLabel value="Email:"/>
+                <h:inputText value="#{employeeBean.email}" id="eml"/>         
+                <f:facet name="footer">                  
+                    <h:commandButton value="Save" action="#{employeeBean.saveEmployee}">
+                    <f:ajax render="fn ln eml" execute="@form"/>
+                     </h:commandButton>
+                </f:facet>
+                <p:commandButton id="reset" value="Reset" action="#{employeeBean.reset}" ajax="false"/>
+            </h:panelGrid>
+             
+      </h:form>
+        
+</h:body>
+</html> 

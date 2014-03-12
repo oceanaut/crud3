@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"      	  
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite">
+      <f:loadBundle basename="welcome.messages" var="msg"/>
+ <h:head><title><h:outputText value="#{msg.welcomeTitle}" /></title></h:head>
+ <h:body>
+     
+    <h:form>
+            <h:panelGrid id="panel1" columns="2" border="1"
+                         cellpadding="5" cellspacing="1">
+                <f:facet name="header">
+                    <h:outputText value="Add Course Information"/>
+                </f:facet>
+                <h:outputLabel value="ID:"/>
+                <h:inputText value="#{courseBean.id}" id="fn"/>
+                <h:outputLabel value="title:"/>
+                <h:inputText value="#{courseBean.title}" id="ln"/>
+                <h:outputLabel value="fee:"/>
+                <h:inputText value="#{courseBean.fee}" id="eml"/>         
+                <f:facet name="footer">                  
+                    <h:commandButton value="Save" action="#{courseBean.storeCourse}">
+                    <f:ajax render="fn ln eml" execute="@form"/>
+                     </h:commandButton>
+                </f:facet>
+                <p:commandButton id="reset" value="Reset" action="#{courseBean.reset}" ajax="false"/>
+            </h:panelGrid>
+             
+      </h:form>
+        
+</h:body>
+</html> 

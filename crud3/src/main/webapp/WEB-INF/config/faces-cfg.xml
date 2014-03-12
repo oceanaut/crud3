@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config
+    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+    http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/javaee/web-facesconfig_2_2.xsd"
+    version="2.2">
+
+    <!-- JSF and Spring are integrated -->
+    <application>
+        <el-resolver>
+            org.springframework.web.jsf.el.SpringBeanFacesELResolver
+        </el-resolver>
+    </application>
+ 
+ <!--    
+ <navigation-rule>
+        <display-name>pages/home/home.xhtml</display-name>
+        <from-view-id>/pages/home/home.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{navigator.navigateTo}</from-action>
+            <from-outcome>Secured</from-outcome>
+            <to-view-id>/pages/secure/secured.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+ </navigation-rule>
+    
+    
+    <navigation-rule>
+        <display-name>pages/home/home.xhtml</display-name>
+        <from-view-id>/pages/home/home.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{navigator.navigateTo}</from-action>
+            <from-outcome>UnSecured</from-outcome>
+            <to-view-id>/pages/unsecure/unsecured.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+    </navigation-rule>
+    -->
+    
+    <navigation-rule>
+        <display-name>pages/secure/secured.xhtml</display-name>
+        <from-view-id>/pages/secure/secured.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{loginBean.logout}</from-action>
+            <from-outcome>loggedout</from-outcome>
+            <to-view-id>/pages/common/login.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+     
+    <navigation-rule>
+        <display-name>pages/common/login.xhtml</display-name>
+        <from-view-id>/pages/common/login.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{loginBean.login}</from-action>
+            <from-outcome>Secured</from-outcome>
+            <to-view-id>/pages/secure/secured.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+    </navigation-rule>
+</faces-config>

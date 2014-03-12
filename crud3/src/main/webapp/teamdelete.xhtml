@@ -1,0 +1,32 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"      	  
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite">
+      <f:loadBundle basename="welcome.messages" var="msg"/>
+ <h:head><title><h:outputText value="#{msg.welcomeTitle}" /></title></h:head>
+ <h:body>
+     
+   <h:form>
+                <h:panelGrid id="panel2" columns="2" border="1"
+                             cellpadding="5" cellspacing="1">
+                    <f:facet name="header">
+                        <h:outputText value="Update/Delete Team Info"/>
+                    </f:facet>
+                
+                    <h:outputLabel value="Team ID:"/>
+                    <h:inputText value="#{teamBean.id}" id="id"/>                    
+                    <h:outputLabel value=" Name:"/>
+                    <h:inputText value="#{teamBean.name}" id="name"/>  
+                    <h:outputLabel value="Email:"/>
+                    <h:inputText value="#{teamBean.rating}" id="rating"/>
+                    <f:facet name="footer">                      
+                        <h:commandButton value="Delete" action="#{teamBean.deleteTeam}">
+                        </h:commandButton>
+                    </f:facet>
+                </h:panelGrid>
+            </h:form>
+        
+</h:body>
+</html> 
